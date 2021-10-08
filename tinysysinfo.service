@@ -1,0 +1,13 @@
+[Unit]
+Description=Tiny Sys Info
+After=local-fs.target network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi/tinysysinfo
+ExecStart=/usr/bin/python3 app.py
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+
