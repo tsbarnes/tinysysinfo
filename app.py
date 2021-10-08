@@ -9,16 +9,19 @@ from socket import AddressFamily
 import distro
 import psutil
 from PIL import Image, ImageDraw, ImageFont
-from ws1in44lcd import LCD, keys
+
+import buttons
+import tft
 
 
 class TinySysInfo:
-    display = LCD.LCD()
+    display = tft.TFT()
+    buttons = buttons.Buttons()
     logger = logging.getLogger("tinysysinfo")
 
     def __init__(self):
-        self.display.init(LCD.SCAN_DIR_DFT)
-        keys.init()
+        self.display.start()
+        self.buttons.start()
 
     def run(self):
         while True:
@@ -51,13 +54,13 @@ class TinySysInfo:
             if wifi:
                 draw.text((5, 65), "Wifi IP:  " + wifi, font=font)
 
-            self.display.show_image(image)
+            self.display.set_image(image)
 
-            for button in [keys.KEY1_PIN, keys.KEY2_PIN, keys.KEY3_PIN]:
-                if not keys.get_input(button):
-                    self.logger.info("Button " + str(button))
+            while not self.buttons.queue_empty():
+                for event in self.buttons.get_event():
+                    self.logger.debug("Button pressed: " + event)
 
-            time.sleep(1)
+            time.sleep(0.1)
 
 
 if __name__ == '__main__':
