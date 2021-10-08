@@ -33,7 +33,7 @@ class TinySysInfo:
         signal.signal(signal.SIGINT, self.shutdown)
         signal.signal(signal.SIGTERM, self.shutdown)
 
-    def shutdown(self, *args):
+    def shutdown(self):
         self.logger.info("tinysysinfo shutting down gracefully...")
         self.display.clear()
         time.sleep(1)
@@ -78,6 +78,11 @@ class TinySysInfo:
                     self.logger.debug("Button pressed: " + event)
                     if event == "KEY_PRESS":
                         self.display.clear()
+                    if event == "KEY1":
+                        image = Image.new("RGB", (self.display.lcd.width, self.display.lcd.height))
+                        draw = ImageDraw.Draw(image)
+                        draw.rectangle((0, 0, self.display.lcd.width, self.display.lcd.height), fill="orange")
+                        self.display.set_image(image)
 
             time.sleep(0.1)
 
