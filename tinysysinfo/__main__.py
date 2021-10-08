@@ -11,9 +11,8 @@ import distro
 import psutil
 from PIL import Image, ImageDraw, ImageFont
 
-import buttons
-import tft
-
+from . import buttons
+from . import tft
 
 try:
     from local_settings import FONT
