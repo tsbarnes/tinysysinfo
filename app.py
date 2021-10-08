@@ -10,7 +10,7 @@ import distro
 import psutil
 from PIL import Image, ImageDraw, ImageFont
 
-from ws1in44lcd import LCD
+from ws1in44lcd import LCD, keys
 
 
 class TinySysInfo:
@@ -19,6 +19,8 @@ class TinySysInfo:
 
     def __init__(self):
         self.display.init(LCD.SCAN_DIR_DFT)
+        keys.init()
+        self.display.text = "I have nadmissible."
 
     def run(self):
         while True:
