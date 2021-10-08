@@ -14,6 +14,12 @@ import buttons
 import tft
 
 
+try:
+    from local_settings import FONT
+except ImportError:
+    FONT = None
+
+
 class TinySysInfo:
     display = tft.TFT()
     buttons = buttons.Buttons()
@@ -28,11 +34,12 @@ class TinySysInfo:
             image = Image.new("RGB", (128, 128))
             draw = ImageDraw.Draw(image)
 
-            try:
-                font = ImageFont.truetype(font="/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", size=10)
-            except OSError as error:
-                self.logger.error(error)
-                font = None
+            font = None
+            if FONT:
+                try:
+                    font = ImageFont.truetype(font=FONT, size=10)
+                except OSError as error:
+                    self.logger.error(error)
 
             filename = getframeinfo(currentframe()).filename
             parent = Path(filename).resolve().parent
@@ -58,12 +65,12 @@ class TinySysInfo:
 
             while not self.buttons.queue_empty():
                 for event in self.buttons.get_event():
-                    self.logger.debug("Button pressed: " + event)
+                    self.logger.info("Button pressed: " + event)
 
             time.sleep(0.1)
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     app = TinySysInfo()
     app.run()
