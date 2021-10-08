@@ -28,9 +28,9 @@ class TinySysInfo:
             draw = ImageDraw.Draw(image)
 
             try:
-                font = ImageFont.truetype(font="/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf")
+                font = ImageFont.truetype(font="/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", size=12)
             except OSError as error:
-                logging.error(error)
+                self.logger.error(error)
                 font = None
 
             filename = getframeinfo(currentframe()).filename
@@ -47,9 +47,9 @@ class TinySysInfo:
             draw.text((5, 35), "CPU Temp: " + str(round(temperature)) + "°", font=font)
             draw.text((5, 50), "Hostname: " + platform.node(), font=font)
             wifi = None
-            for iface in psutil.net_if_addrs()['wlan0']:
-                if iface.family == AddressFamily.AF_INET:
-                    wifi = iface.address
+            for network_interface in psutil.net_if_addrs()['wlan0']:
+                if network_interface.family == AddressFamily.AF_INET:
+                    wifi = network_interface.address
             if wifi:
                 draw.text((5, 65), "Wifi IP:  " + wifi, font=font)
 
