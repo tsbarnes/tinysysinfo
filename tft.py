@@ -2,7 +2,7 @@ import logging
 import threading
 import time
 
-from PIL import Image
+from PIL import Image, ImageDraw
 from ws1in44lcd import LCD
 
 
@@ -48,5 +48,10 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     tft = TFT()
     tft.start()
+    image = Image.new("RGB", (128, 128))
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((10, 10, 118, 118), fill="red", outline="orange", width=1)
+    tft.set_image(image)
+    time.sleep(2)
     tft.clear()
     time.sleep(1)
