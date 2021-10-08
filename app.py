@@ -1,7 +1,7 @@
+import logging
 import os
 import platform
 import time
-import logging
 from inspect import getframeinfo, currentframe
 from pathlib import Path
 from socket import AddressFamily
@@ -9,7 +9,6 @@ from socket import AddressFamily
 import distro
 import psutil
 from PIL import Image, ImageDraw, ImageFont
-
 from ws1in44lcd import LCD, keys
 
 
@@ -20,7 +19,6 @@ class TinySysInfo:
     def __init__(self):
         self.display.init(LCD.SCAN_DIR_DFT)
         keys.init()
-        self.display.text = "I have nadmissible."
 
     def run(self):
         while True:
@@ -28,7 +26,7 @@ class TinySysInfo:
             draw = ImageDraw.Draw(image)
 
             try:
-                font = ImageFont.truetype(font="/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", size=12)
+                font = ImageFont.truetype(font="/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", size=10)
             except OSError as error:
                 self.logger.error(error)
                 font = None
@@ -55,9 +53,14 @@ class TinySysInfo:
 
             self.display.show_image(image)
 
+            for button in [keys.KEY1_PIN, keys.KEY2_PIN, keys.KEY3_PIN]:
+                if not keys.get_input(button):
+                    self.logger.info("Button " + str(button))
+
             time.sleep(1)
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     app = TinySysInfo()
     app.run()
