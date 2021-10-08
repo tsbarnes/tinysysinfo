@@ -33,7 +33,7 @@ class TinySysInfo:
         signal.signal(signal.SIGINT, self.shutdown)
         signal.signal(signal.SIGTERM, self.shutdown)
 
-    def shutdown(self):
+    def shutdown(self, *args):
         self.logger.info("tinysysinfo shutting down gracefully...")
         self.display.clear()
         time.sleep(1)
@@ -53,7 +53,7 @@ class TinySysInfo:
 
             filename = getframeinfo(currentframe()).filename
             parent = Path(filename).resolve().parent
-            logo = Image.open(os.path.join(parent, 'raspberry-pi.png'))
+            logo = Image.open(os.path.join(parent, '../raspberry-pi.png'))
             image.paste(logo, box=(50, 90))
 
             with open('/sys/firmware/devicetree/base/model', 'r') as model_file:

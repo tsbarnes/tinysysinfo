@@ -5,7 +5,7 @@ After=local-fs.target network.target
 [Service]
 Type=simple
 WorkingDirectory=/home/pi/tinysysinfo
-ExecStart=/usr/bin/python3 app.py
+ExecStart=/usr/bin/python3 -m tinysysinfo
 Restart=on-failure
 
 [Install]
