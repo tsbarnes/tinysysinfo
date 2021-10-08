@@ -1,6 +1,7 @@
 import logging
 import os
 import platform
+import signal
 import time
 from inspect import getframeinfo, currentframe
 from pathlib import Path
@@ -28,6 +29,15 @@ class TinySysInfo:
     def __init__(self):
         self.display.start()
         self.buttons.start()
+
+        signal.signal(signal.SIGINT, self.shutdown)
+        signal.signal(signal.SIGTERM, self.shutdown)
+
+    def shutdown(self, *args):
+        self.logger.info("tinysysinfo shutting down gracefully...")
+        self.display.clear()
+        time.sleep(1)
+        exit(0)
 
     def run(self):
         while True:
@@ -65,7 +75,9 @@ class TinySysInfo:
 
             while not self.buttons.queue_empty():
                 for event in self.buttons.get_event():
-                    self.logger.info("Button pressed: " + event)
+                    self.logger.debug("Button pressed: " + event)
+                    if event == "KEY_PRESS":
+                        self.display.clear()
 
             time.sleep(0.1)
 
