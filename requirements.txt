@@ -1,4 +1,7 @@
-ws1in44lcd~=0.0.1
-psutil~=5.8.0
-distro~=1.6.0
-Pillow~=8.3.2
+ws1in44lcd>=0.0.1
+psutil>=5.8.0
+distro>=1.6.0
+Pillow>=8.3.2
+RPi.GPIO>=0.7.0
+spidev>=3.5
+numpy>=1.21.2
