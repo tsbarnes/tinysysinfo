@@ -33,7 +33,7 @@ class TFT(threading.Thread):
                 self.dirty = False
                 self.logger.debug("Writing image to display")
                 self.lcd.show_image(self.image)
-            time.sleep(0.1)
+            time.sleep(0.5)
 
     def set_image(self, image: Image):
         self.image = image

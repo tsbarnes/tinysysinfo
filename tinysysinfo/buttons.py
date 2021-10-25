@@ -48,6 +48,7 @@ class Buttons(threading.Thread):
                     button_state[key] = True
                 else:
                     button_state[key] = False
+            time.sleep(0.2)
 
     def get_event(self):
         if not self.events.empty():

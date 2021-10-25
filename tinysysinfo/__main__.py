@@ -83,7 +83,7 @@ class TinySysInfo:
                         draw.rectangle((0, 0, self.display.lcd.width, self.display.lcd.height), fill="orange")
                         self.display.set_image(image)
 
-            time.sleep(0.1)
+            time.sleep(0.3)
 
 
 if __name__ == '__main__':
