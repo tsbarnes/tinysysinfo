@@ -14,6 +14,7 @@ from PIL import Image, ImageDraw, ImageFont
 from . import buttons
 from . import tft
 from . import color_test
+from . import resources
 
 try:
     from local_settings import FONT
@@ -96,7 +97,7 @@ class TinySysInfo:
                     self.draw_screen = color_test.draw_screen
                     self.display.clear()
                 elif event == "KEY_DOWN":
-                    pass
+                    self.draw_screen = resources.draw_screen
                 elif event == "KEY_LEFT":
                     pass
                 elif event == "KEY_RIGHT":
