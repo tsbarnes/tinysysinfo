@@ -10,6 +10,7 @@ class TFT(threading.Thread):
     lcd: LCD.LCD = None
     image: Image = None
     thread_lock: threading.Lock = None
+    shutdown: threading.Event = None
     dirty: bool = False
     logger: logging.Logger = None
 
@@ -19,6 +20,7 @@ class TFT(threading.Thread):
         self.lcd.init(LCD.SCAN_DIR_DFT)
         self.image = Image.new("RGB", (self.lcd.width, self.lcd.height))
         self.thread_lock = threading.Lock()
+        self.shutdown = threading.Event()
         super().__init__()
 
     def run(self) -> None:
@@ -26,9 +28,13 @@ class TFT(threading.Thread):
         # run thread as a daemon so it gets cleaned up on exit.
         thread_process.daemon = True
         thread_process.start()
+        self.shutdown.wait()
+
+    def stop(self):
+        self.shutdown.set()
 
     def main_loop(self):
-        while True:
+        while not self.shutdown.is_set():
             if self.dirty and self.image:
                 self.dirty = False
                 self.logger.debug("Writing image to display")

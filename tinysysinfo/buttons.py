@@ -22,11 +22,13 @@ class Buttons(threading.Thread):
     thread_lock: threading.Lock = None
     logger: logging.Logger = None
     events: queue.Queue = None
+    shutdown: threading.Event = None
 
     def __init__(self):
         self.logger = logging.getLogger("tinysysinfo.buttons")
         self.thread_lock = threading.Lock()
         self.events = queue.Queue()
+        self.shutdown = threading.Event()
         keys.init()
         super().__init__()
 
@@ -35,12 +37,16 @@ class Buttons(threading.Thread):
         # run thread as a daemon so it gets cleaned up on exit.
         thread_process.daemon = True
         thread_process.start()
+        self.shutdown.wait()
+
+    def stop(self):
+        self.shutdown.set()
 
     def main_loop(self):
         button_state = dict()
         for key in button_dict.keys():
             button_state[key] = False
-        while True:
+        while not self.shutdown.is_set():
             for key in button_dict.keys():
                 if not keys.get_input(button_dict[key]):
                     if not button_state[key]:
